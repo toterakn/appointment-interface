@@ -1,19 +1,40 @@
-import { Form, Container, Row, Col, DropdownButton, Dropdown } from "react-bootstrap";
-import { BiSearch } from "react-icons/bi";
+import { Form, Container, Row, Col, Dropdown } from "react-bootstrap";
+import { BiSearch, BiCheck } from "react-icons/bi";
 
-const DropDown = () => {
+const DropDown = ({sortBy, onSortByChange, orderBy, onOrderByChange}) => {
     return (
-        <DropdownButton id="dropdown-basic-button" title="Sort By">
-            <Dropdown.Item href="#/action-1">Pet Name</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Ownder Name</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Date</Dropdown.Item>
-            <Dropdown.Item href="#/action-4">Asc</Dropdown.Item>
-            <Dropdown.Item href="#/action-5">Desc</Dropdown.Item>
-        </DropdownButton>
+        <Dropdown autoClose="outside">
+            <Dropdown.Toggle id="dropdown-autoclose-outside">
+                Sort By
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+                <Dropdown.Item onClick={() => onSortByChange('petName')}>
+                    Pet Name 
+                    {(sortBy === 'petName') ? <BiCheck /> : <></>} 
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => onSortByChange('ownerName')}>
+                    Ownder Name
+                    {(sortBy === 'ownerName') ? <BiCheck /> : <></>} 
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => onSortByChange('aptDate')}>
+                    Date
+                    {(sortBy === 'date') ? <BiCheck /> : <></>} 
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={() => onOrderByChange('asc')}>
+                    Asc
+                    {(orderBy === 'asc') ? <BiCheck /> : <></>} 
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => onOrderByChange('desc')}>
+                    Desc
+                    {(orderBy === 'desc') ? <BiCheck /> : <></>} 
+                </Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
     );
 };
 
-const Search = () => {
+const Search = ({query, onQueryChange, sortBy, onSortByChange, orderBy, onOrderByChange}) => {
     return(
         <Container>
             <Row className="justify-content-center well">
@@ -27,10 +48,14 @@ const Search = () => {
                             </Col>
                             <Col xs="auto" sm="auto" md="auto" lg="auto" xl="auto">
                                 <Form.Control type="text" 
-                                    name="query" id="query" value="" />
+                                    name="query" id="query" value={query}
+                                    onChange={(event) => {onQueryChange(event.target.value)}} />
                             </Col>
                             <Col xs="auto" sm="auto" md="auto" lg="auto" xl="auto">
-                                <DropDown />
+                                <DropDown sortBy={sortBy}
+                                            onSortByChange={(newSort) => onSortByChange(newSort)}
+                                            orderBy={orderBy}
+                                            onOrderByChange={(newOrder) => onOrderByChange(newOrder)} />
                             </Col>
                         </Form.Group>
                     </Form>
